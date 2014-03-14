@@ -1,0 +1,13 @@
+extends layout
+
+block content
+    h1.
+        hi
+    p.
+        name: input(ng-model='x') {{x}}	
+
+    input(ng-model='x')
+    ul
+        each user, i in userlist
+            li
+                a(href="mailto:#{user.email}")= user.email

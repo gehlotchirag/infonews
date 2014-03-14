@@ -1,0 +1,42 @@
+extends layout
+
+block content
+    div.container
+        div.row
+        br
+        br
+        br
+    div.container
+        div.row
+            ng-switch(on='anyItemOpen()')
+                ul#out(data-role='listview', data-inset='true', ng-init="userlist= #{JSON.stringify(userlist)}")
+                        li(data-role='list-divider')
+                            | Thrusday, March 13, 2014
+                            span.ui-li-count {{userlist.length}}
+                            li(ng-repeat='user in userlist | startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage' jqm-collapsible-repeat )
+                                a(ng-click="open(user)") {{user.description | limitTo: pagination.perPage*2 }}
+                                    P {{user.description | limitTo: pagination.perPage*40 }}
+                                    p.ui-li-aside
+                                      strong 9:18
+                                      | AM
+                div(ng-switch-when='true')
+                    div.panel.panel-default
+                        div.panel-heading
+                            a(ng-click='close()') < Back
+                            center Headline:: {{opened.description | limitTo: pagination.perPage*2 }}
+                        div.panel-body
+                            div#news.well(ng-controller='ItemController')         
+                                | {{opened.description}} 
+                    div.input-group(ng-controller="max")
+                        input.form-control(type='text', placeholder='Enter your comments!' , ng-model='txt', value="hhhh" )
+                        span.input-group-btn
+                            button.btn.btn-default(type='button' , ng-click="addcomment(opened.id,txt)") {{txt}} Comment!
+                    
+                    ul.list-group
+                        li(ng-repeat='user in opened.comments' class='list-group-item')
+                            P {{user.content | limitTo: pagination.perPage*20 }}
+                                    
+            button(ng-click="pagination.prevPage()", data-role='button',data-icon="arrow-l" ,data-inline='true') Previous
+            button(ng-click="pagination.nextPage()", data-role='button',data-icon="arrow-r" ,data-iconpos="right", data-inline='true') Next
+        
+            

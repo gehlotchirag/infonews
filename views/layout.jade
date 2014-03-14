@@ -1,0 +1,21 @@
+doctype html
+html(ng-app='Test')
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='lib/bootstrap.css')
+    link(rel='stylesheet', href='lib/jquery.mobile.css')
+    script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.min.js')
+    script(src='javascripts/service.js')
+    script(src='javascripts/roll.js')
+    script(src='lib/jquery.js')
+    script(src='lib/jquery.mobile.js')
+    script(src='lib/bootstrap.js')
+  body(ng-controller='Main')
+    block content
+        div(data-role='footer')
+            div(data-role='navbar')
+            ul
+                li
+                    a(href='#', data-icon='grid') Summary
+    
