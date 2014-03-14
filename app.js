@@ -11,7 +11,8 @@ var path = require('path');
 
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('localhost:27017/newsreader');
+//var db = monk('localhost:27017/newsreader');
+var db = monk('mongodb://admin:developer@oceanic.mongohq.com:10020/newsreader');
 
 
 var app = express();
