@@ -3,7 +3,7 @@ newsreader
 
 ## News feed reader App
 
-Simple News feed reader app with node js mongo DB and angular <a href="https://github.com/addyosmani/todomvc">https://github.com/addyosmani/todomvc</a>
+Simple News feed reader app with node js mongo DB and angular <a href="https://github.com/gehlotchirag/infonews">https://github.com/gehlotchirag/infonews</a>
 
 ###Installation
 1. Clone this repo
