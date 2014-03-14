@@ -1,40 +1,70 @@
 
 var app = angular.module('Test', ['SimplePagination']);
 
-app.controller('ItemController', ['$scope', 'Pagination',   
-function($scope, Pagination) {
+app.controller('ItemController', ['$compile','$http','$scope', 'Pagination',   
+function($compile,$http,$scope, Pagination) {
     $("#news").mouseup( function (e) { 
         //alert("You selected: "+window.getSelection());
         
         var src_str = $("#news").html();
         var term = new String(window.getSelection());
         
-        // term = term.replace(/(\s+)/,"(<[^>]+>)*$1(<[^>]+>)*");
- //        var pattern = new RegExp("("+term+")", "i");
- // 
- //        src_str = src_str.replace(pattern, "<mark>$1</mark>");
- //        src_str = src_str.replace(/(<mark>[^<>]*)((<[^>]+>)+)([^<>]*<\/mark>)/,"$1</mark>$2<mark>$4");
-         
-         if ($('#news:contains('+term+')'))
-         {
-             $('#news:contains('+term+')').html().replace(term , '<span class="highlight">'+term+'</span>');
-             alert('<span class="highlight">'+term+'</span>');
+         // if ($('#news:contains('+term+')'))
+ //         {
+ //            // $('#news').html().replace(term , '<span class="highlight">'+term+'</span>');
+ //             alert('<span class="highlight">'+term+'</span>');
+ //    
+ //         }        
+         var str = $("#news").html();
+         var newstr = '<span class="highlight" ng-mouseover="loadcmt($event)" ng-mouseout="unloadcmt($event)" >'+term+'</span>'
+         var res = str.replace(term,newstr);
+       $("#news").html(res)
+       var appPane = $('#news');//JQuery request for the app pane element.
+      // appPane.html(data);//The dynamically loaded data
+       $compile(appPane.contents())($scope);//Tells Angular to recompile the contents of the app pane.
+        
+       $http.get('/high/' + $scope.opened._id+'/'+term).success(function(data) {
+           console.log("done")
+       });          
+    });
     
-         }         
-        //$("#news").html(src_str);
+    $( "#news" ).ready(function() {
+
+      });
+      
+    $scope.loadcmt = function($event) {
+        $("#tooltip").css("visibility","visible")    
+        $("#tooltip").css("top", ($event.y) + "px").css("left", ($event.y) + "px");
+    };
+    $scope.unloadcmt = function($event) {
+        
+        $("#tooltip").css("visibility","hidden")    
+    };
+    
+    $scope.$watch('opened.description', function () {
+        //alert($scope.opened.description); 
+         for (i in $scope.opened.highlight)
+         {
+         var text = $scope.opened.highlight[i].text;
+         console.log(text,$scope.opened.highlight[i])
+         term = text;
+         var str = $scope.opened.description;
+         var newstr = '<span class="highlight">'+term+'</span>';
+         var res = str.replace(term,newstr);
+           $scope.opened.description = res;
+    }
         
     });
+    
+    
 }]);
 
 app.controller('max', ['$scope', 'Pagination',   
 function($scope, Pagination) {
-    $scope.txt="HI";
     $scope.$watch('txt', function () {
-        console.log("seeee"); 
         app.txt = $scope.txt;
     });    
 }]);
-
 
 
 
@@ -57,6 +87,14 @@ function($http,$scope, Pagination) {
           $scope.opened = item;
       }        
       $("#out").hide();
+      
+      var term;
+      for (i in $scope.opened.highlight)
+      term = ($scope.opened.highlight[i].text)
+      var str = $("#news").html();
+      var newstr = '<span class="highlight">'+term+'</span>';
+      var res = str.replace(term,newstr);
+        $("#news").html(res)
   };
   
   $scope.isOpen = function(item){
@@ -79,7 +117,6 @@ function($http,$scope, Pagination) {
        });
     };
   
-  
   $scope.addcomment = function(id,txt) { 
       $scope.opened._id;
       $http.get('/del/' + $scope.opened._id+'/'+txt).success(function(data) {
@@ -101,6 +138,29 @@ app.directive('jqmCollapsibleRepeat', function () {
     }
   };
 });
+
+app.directive('bindHtmlUnsafe', function( $compile ) {
+    return function( $scope, $element, $attrs ) {
+
+        var compile = function( newHTML ) { // Create re-useable compile function
+            newHTML = $.trim (newHTML)
+            alert(newHTML)
+            newHTML = $compile(newHTML)($scope); // Compile html
+            $element.html('').append(newHTML); // Clear and append it
+        };
+
+        var htmlName = $attrs.bindHtmlUnsafe; // Get the name of the variable 
+                                              // Where the HTML is stored
+
+        $scope.$watch(htmlName, function( newHTML ) { // Watch for changes to 
+                                                      // the HTML
+            if(!newHTML) return;
+            compile(newHTML);   // Compile it
+        });
+
+    };
+});
+
 
 app.directive('jqmCollapsibleRepeat', function () {
   return function (scope, element, attrs) {

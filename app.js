@@ -44,6 +44,7 @@ app.get('/helloworld', routes.helloworld);
 app.get('/userlist', routes.userlist(db));
 app.get('/getUser', routes.getUser(db));
 app.get('/del/:id/:txt', routes.del(db));
+app.get('/high/:id/:txt', routes.high(db));
 
 
 

@@ -44,4 +44,15 @@ exports.del = function(db) {
 };
 
 
+exports.high = function(db) {
+    return function(req, res) {
+        var GetId = req.params.id;
+        var text = req.params.txt;
+        var collection = db.get('newsreader');
+        collection.update({ _id:GetId}, {$push:{'highlight': {"content":text}}}, function(err, result) {
+            res.send((result === 1) ? { msg: 'done' } : { msg:'error: ' + err });  
+        });
+    };
+};
+
 
