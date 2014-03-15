@@ -18,11 +18,10 @@ function($compile,$http,$scope, Pagination) {
          var str = $("#news").html();
          var newstr = '<span class="highlight" ng-mouseover="loadcmt($event)" ng-mouseout="unloadcmt($event)" >'+term+'</span>'
          var res = str.replace(term,newstr);
-       $("#news").html(res)
+           $("#news").html(res)
        var appPane = $('#news');//JQuery request for the app pane element.
       // appPane.html(data);//The dynamically loaded data
        $compile(appPane.contents())($scope);//Tells Angular to recompile the contents of the app pane.
-        
        $http.get('/high/' + $scope.opened._id+'/'+term).success(function(data) {
            console.log("done")
        });          
@@ -43,14 +42,22 @@ function($compile,$http,$scope, Pagination) {
     
     $scope.$watch('opened.description', function () {
         function showpanel() {  
+            
             for (i in $scope.opened.highlight)
             {
-            var term = ($scope.opened.highlight[i].text)
-            console.log(term)
-            var str = $("#news").html();
-            var newstr = '<span class="highlight">'+term+'</span>';
+                var str = $("#news").html();
+                
+            var term = $.trim(($scope.opened.highlight[i].text));
+            var newstr = '<span class="highlight" ng-mouseover="loadcmt($event)">'+term+'</span>';
             var res = str.replace(term,newstr);
+            console.log("???????????????",newstr)
+            console.log("*********************",res)
+            
               $("#news").html(res)
+              var appPane = $('#news');//JQuery request for the app pane element.
+             // appPane.html(data);//The dynamically loaded data
+              $compile(appPane.contents())($scope);//Tells Angular to recompile the contents of the app pane.
+              
           }
            
        }
@@ -105,8 +112,8 @@ function($scope, Pagination) {
 
 
 
-app.controller('Main', ['$http','$scope', 'Pagination',   
-function($http,$scope, Pagination) {
+app.controller('Main', ['$compile','$http','$scope', 'Pagination',   
+function($compile,$http,$scope, Pagination) {
   $scope.pagination = Pagination.getNew(5);
   
   
@@ -127,11 +134,17 @@ function($http,$scope, Pagination) {
       
       var term;
       for (i in $scope.opened.highlight)
-      term = ($scope.opened.highlight[i].text)
+      {
+      term = $.trim(($scope.opened.highlight[i].text))
       var str = $("#news").html();
-      var newstr = '<span class="highlight">'+term+'</span>';
+      var newstr = '<span class="highlight" ng-mouseover="loadcmt($event)">'+term+'</span>';
       var res = str.replace(term,newstr);
         $("#news").html(res)
+        var appPane = $('#news');//JQuery request for the app pane element.
+       // appPane.html(data);//The dynamically loaded data
+        $compile(appPane.contents())($scope);//Tells Angular to recompile the contents of the app pane.
+        
+    }
   };
   
   $scope.isOpen = function(item){
@@ -149,7 +162,6 @@ function($http,$scope, Pagination) {
         $scope.opened = undefined;
         $scope.userlist = data;
         $("#out").show();
-      
       });
       
   };
