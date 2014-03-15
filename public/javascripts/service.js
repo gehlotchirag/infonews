@@ -42,7 +42,43 @@ function($compile,$http,$scope, Pagination) {
     };
     
     $scope.$watch('opened.description', function () {
-        //alert($scope.opened.description); 
+        function showpanel() {  
+            for (i in $scope.opened.highlight)
+            {
+            var term = ($scope.opened.highlight[i].text)
+            console.log(term)
+            var str = $("#news").html();
+            var newstr = '<span class="highlight">'+term+'</span>';
+            var res = str.replace(term,newstr);
+              $("#news").html(res)
+          }
+           
+       }
+
+       // use setTimeout() to execute
+       setTimeout(showpanel, 200)
+
+        
+       /*    
+        $('mydiv').bind("DOMSubtreeModified",function(){
+          alert('changed');
+        });
+        
+        $('#news').bind('DOMNodeInserted DOMNodeRemoved', function(event) {
+            if (event.type == 'DOMNodeInserted') {
+                alert('Content added! Current content:' + '\n\n' + this.innerHTML);
+            } else {
+                alert('Content removed! Current content:' + '\n\n' + this.innerHTML);
+            }
+        });
+        
+        $('#divId').bind('DOMNodeInserted', function(event) {
+                     alert('inserted ' + event.target.nodeName + // new node
+                   ' in ' + event.relatedNode.nodeName); // parent
+               });
+    */
+        
+        /*
          for (i in $scope.opened.highlight)
          {
          var text = $scope.opened.highlight[i].text;
@@ -53,6 +89,7 @@ function($compile,$http,$scope, Pagination) {
          var res = str.replace(term,newstr);
            $scope.opened.description = res;
     }
+        */
         
     });
     
@@ -106,8 +143,15 @@ function($http,$scope, Pagination) {
   };
   
   $scope.close = function() {
-      $("#out").show();
-      $scope.opened = undefined;
+      $('body').addClass('ui-loading');
+      $http.get('/getUser').success(function(data) {
+        $('body').removeClass('ui-loading');
+        $scope.opened = undefined;
+        $scope.userlist = data;
+        $("#out").show();
+      
+      });
+      
   };
   
   $scope.loadData = function () {
@@ -143,8 +187,7 @@ app.directive('bindHtmlUnsafe', function( $compile ) {
     return function( $scope, $element, $attrs ) {
 
         var compile = function( newHTML ) { // Create re-useable compile function
-            newHTML = $.trim (newHTML)
-            alert(newHTML)
+            newHTML = $.parseHTML((newHTML).trim());
             newHTML = $compile(newHTML)($scope); // Compile html
             $element.html('').append(newHTML); // Clear and append it
         };

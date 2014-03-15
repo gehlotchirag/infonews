@@ -49,7 +49,7 @@ exports.high = function(db) {
         var GetId = req.params.id;
         var text = req.params.txt;
         var collection = db.get('newsreader');
-        collection.update({ _id:GetId}, {$push:{'highlight': {"content":text}}}, function(err, result) {
+        collection.update({ _id:GetId}, {$push:{'highlight': {"text":text}}}, function(err, result) {
             res.send((result === 1) ? { msg: 'done' } : { msg:'error: ' + err });  
         });
     };

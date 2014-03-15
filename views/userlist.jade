@@ -25,8 +25,8 @@ block content
                             a(ng-click='close()') < Back
                             center Headline:: {{opened.description | limitTo: pagination.perPage*2 }}
                         div.panel-body
-                            div#news.well(ng-controller='ItemController', bind-html-unsafe="opened.description")         
-                                | thank you. 
+                            div#news.well(ng-controller='ItemController')         
+                                | {{opened.description}} 
                     div.input-group(ng-controller="max")
                         input.form-control(type='text', placeholder='Enter your comments!' , ng-model='txt', value="hhhh" )
                         span.input-group-btn
