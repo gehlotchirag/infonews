@@ -48,7 +48,7 @@ function($compile,$http,$scope, Pagination) {
                 var str = $("#news").html();
                 
             var term = $.trim(($scope.opened.highlight[i].text));
-            var newstr = '<span class="highlight" ng-mouseover="loadcmt($event)">'+term+'</span>';
+            var newstr = '<span class="highlight" ng-mouseover="loadcmt($event)" ng-mouseout="unloadcmt($event)">'+term+'</span>';
             var res = str.replace(term,newstr);
             console.log("???????????????",newstr)
             console.log("*********************",res)
@@ -137,7 +137,7 @@ function($compile,$http,$scope, Pagination) {
       {
       term = $.trim(($scope.opened.highlight[i].text))
       var str = $("#news").html();
-      var newstr = '<span class="highlight" ng-mouseover="loadcmt($event)">'+term+'</span>';
+      var newstr = '<span class="highlight" ng-mouseover="loadcmt($event)" ng-mouseout="unloadcmt($event)">'+term+'</span>';
       var res = str.replace(term,newstr);
         $("#news").html(res)
         var appPane = $('#news');//JQuery request for the app pane element.
