@@ -48,8 +48,22 @@ exports.high = function(db) {
     return function(req, res) {
         var GetId = req.params.id;
         var text = req.params.txt;
+        var ObjectId = require('mongodb').ObjectID;
         var collection = db.get('newsreader');
-        collection.update({ _id:GetId}, {$push:{'highlight': {"text":text}}}, function(err, result) {
+        collection.update({ _id:GetId}, {$push:{'highlight': {_id: new ObjectId(), 'text': text} }},{upsert:true,safe:false}, function(err, result) {
+            res.send((result === 1) ? { msg: 'done' } : { msg:'error: ' + err });  
+        });
+    };
+};
+
+exports.adcom = function(db) {
+    return function(req, res) {
+        var GetId = req.params.id;
+        var HighId = req.params.hid;
+        var text = req.params.txt;
+        var ObjectId = require('mongodb').ObjectID;
+        var collection = db.get('newsreader');
+        collection.update({ _id:GetId , highlight._id:HighId }, {$push:{'highlight': {'comment': text} }},{upsert:true,safe:false}, function(err, result) {
             res.send((result === 1) ? { msg: 'done' } : { msg:'error: ' + err });  
         });
     };

@@ -18,6 +18,10 @@ function($compile,$http,$scope, Pagination) {
          var str = $("#news").html();
          var newstr = '<span class="highlight" ng-mouseover="loadcmt($event)" ng-mouseout="unloadcmt($event)" >'+term+'</span>'
          var res = str.replace(term,newstr);
+         console.log("----->>>",term)
+         console.log("?????",newstr)
+         
+         console.log(res)
            $("#news").html(res)
        var appPane = $('#news');//JQuery request for the app pane element.
       // appPane.html(data);//The dynamically loaded data
@@ -50,8 +54,9 @@ function($compile,$http,$scope, Pagination) {
             var term = $.trim(($scope.opened.highlight[i].text));
             var newstr = '<span class="highlight" ng-mouseover="loadcmt($event)" ng-mouseout="unloadcmt($event)">'+term+'</span>';
             var res = str.replace(term,newstr);
-            console.log("???????????????",newstr)
-            console.log("*********************",res)
+            alert($scope.opened.highlight[i]._id)
+          //  console.log("???????????????",newstr)
+        //    console.log("*********************",res)
             
               $("#news").html(res)
               var appPane = $('#news');//JQuery request for the app pane element.
@@ -131,6 +136,7 @@ function($compile,$http,$scope, Pagination) {
           $scope.opened = item;
       }        
       $("#out").hide();
+      $("#button").hide();
       
       var term;
       for (i in $scope.opened.highlight)
@@ -162,6 +168,8 @@ function($compile,$http,$scope, Pagination) {
         $scope.opened = undefined;
         $scope.userlist = data;
         $("#out").show();
+        $("#button").show();
+        
       });
       
   };

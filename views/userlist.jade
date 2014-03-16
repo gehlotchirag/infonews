@@ -35,9 +35,13 @@ block content
                         li(ng-repeat='user in opened.comments' class='list-group-item')
                             P {{user.content | limitTo: pagination.perPage*20 }}
         
-            button(ng-click="pagination.prevPage()", data-role='button',data-icon="arrow-l" ,data-inline='true') Previous
-            button(ng-click="pagination.nextPage()", data-role='button',data-icon="arrow-r" ,data-iconpos="right", data-inline='true') Next
+            div.row#button
+                div.col-sm-6
+                    button(ng-click="pagination.prevPage()", data-role='button',data-icon="arrow-l" ,data-inline='true') Previous
+                div.col-sm-6
+                    button(style='float: right;' ng-click="pagination.nextPage()", data-role='button',data-icon="arrow-r" ,data-iconpos="right", data-inline='true') Next
             #tooltip.col-md-3(style='position: absolute; z-index: 10; visibility: hidden; background-color: rgb(255, 255, 255); padding: 10px 10px; box-shadow: rgb(0, 0, 0) 0px 0px 10px; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; top: 284px; left: 279.5px; background-position: initial initial; background-repeat: initial initial;')
+                div#comment do you want to comment?
                 div.input-group(ng-controller="max")
                     input.form-control(type='text', placeholder='Enter your comments!' , ng-model='txt', value="hhhh" )
                     span.input-group-btn
