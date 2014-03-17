@@ -14,37 +14,87 @@ function($compile,$http,$scope, Pagination) {
  //            // $('#news').html().replace(term , '<span class="highlight">'+term+'</span>');
  //             alert('<span class="highlight">'+term+'</span>');
  //    
- //         }        
-         var str = $("#news").html();
-         var newstr = '<span class="highlight" ng-mouseover="loadcmt($event)" ng-mouseout="unloadcmt($event)" >'+term+'</span>'
-         var res = str.replace(term,newstr);
-         console.log("----->>>",term)
-         console.log("?????",newstr)
-         
-         console.log(res)
-           $("#news").html(res)
-       var appPane = $('#news');//JQuery request for the app pane element.
-      // appPane.html(data);//The dynamically loaded data
-       $compile(appPane.contents())($scope);//Tells Angular to recompile the contents of the app pane.
-       $http.get('/high/' + $scope.opened._id+'/'+term).success(function(data) {
-           console.log("done")
-       });          
+ //         }    
+ 
+ $http.post('/high/' + $scope.opened._id+'/'+term).success(function(data) {
+     app.highid = data;
+     $scope.loadData();
+     var str = $("#news").html();
+     var newstr = '<span id='+app.highid+' class="highlight" ng-mouseover="loadcmt($event)" ng-mouseout="unloadcmt($event)" >'+term+'</span>'
+     var res = str.replace(term,newstr);
+     console.log("----->>>",term)
+     console.log("?????",newstr)
+     
+     console.log(res)
+       $("#news").html(res)
+       
+       
+       
+       
+   var appPane = $('#news');//JQuery request for the app pane element.
+  // appPane.html(data);//The dynamically loaded data
+   $compile(appPane.contents())($scope);//Tells Angular to recompile the contents of the app pane.
+     
+ });  
+     
+     
+        
+               
     });
     
     $( "#news" ).ready(function() {
 
       });
       
-    $scope.loadcmt = function($event) {
-        $("#tooltip").css("visibility","visible")    
-        $("#tooltip").css("top", ($event.y) + "px").css("left", ($event.y) + "px");
-    };
-    $scope.unloadcmt = function($event) {
+    $scope.loadcmt = function() {
+        app.high_id = event.srcElement.id;
+        for (i in $scope.opened.highlight) { 
+            var sn = $scope.opened.highlight[i].number.toString();
+            var apid = app.high_id.toString();
+            //if (($scope.opened.highlight[i].number).equals(app.high_id));
+            if (sn == apid);
+            {
+                alert($scope.opened.highlight[i].number + "=====" +app.high_id)
+                
+            alert("in"+$scope.opened.highlight[i].comment)            
+            $scope.currentcom = $scope.opened.highlight[i].comment;
+            }
+         }
         
-        $("#tooltip").css("visibility","hidden")    
+        
+         // $http.get('/findcom/'+ $scope.opened._id+'/'+app.high_id).success(function(data) {
+         //   //  console.log("*******************",data)
+         //   $scope.userlist = data;
+         // });
+        
+        $( "#tooltip #commented" ).html( "<p>"+$scope.currentcom+"</p>" );
+        $("#tooltip").css("visibility","visible") 
+        $("#tooltip").css({top: (event.pageY), left: (event.pageX), position:'absolute'});  
+      //  $("#tooltip").css("top", ($event.y) + "px").css("left", ($event.x) + "px");
     };
     
+    $scope.loadData = function () {
+        console.log("here")
+         $http.get('/getUser').success(function(data) {
+             console.log("*******************",data)
+//             console.log("*******************",$scope.opened)
+           $scope.userlist = data;
+         });
+      };
+    
+    
+    $scope.unloadcmt = function(event) {
+        if(event.toElement.id !== "tooltip")
+        $("#tooltip").css("visibility","hidden")
+    };
+    
+   
+    $scope.$watch('currentcom', function () {
+     alert($scope.currentcom)   
+    });
+    
     $scope.$watch('opened.description', function () {
+        alert($scope.opened.description)
         function showpanel() {  
             
             for (i in $scope.opened.highlight)
@@ -52,9 +102,9 @@ function($compile,$http,$scope, Pagination) {
                 var str = $("#news").html();
                 
             var term = $.trim(($scope.opened.highlight[i].text));
-            var newstr = '<span class="highlight" ng-mouseover="loadcmt($event)" ng-mouseout="unloadcmt($event)">'+term+'</span>';
+            var id = $scope.opened.highlight[i].number;
+            var newstr = '<span id='+id+' class="highlight" ng-mouseover="loadcmt()" ng-mouseout="unloadcmt($event)">'+term+'</span>';
             var res = str.replace(term,newstr);
-            alert($scope.opened.highlight[i]._id)
           //  console.log("???????????????",newstr)
         //    console.log("*********************",res)
             
@@ -63,45 +113,16 @@ function($compile,$http,$scope, Pagination) {
              // appPane.html(data);//The dynamically loaded data
               $compile(appPane.contents())($scope);//Tells Angular to recompile the contents of the app pane.
               
-          }
-           
-       }
+          }    
+      }
 
        // use setTimeout() to execute
        setTimeout(showpanel, 200)
 
+      
+     
         
-       /*    
-        $('mydiv').bind("DOMSubtreeModified",function(){
-          alert('changed');
-        });
         
-        $('#news').bind('DOMNodeInserted DOMNodeRemoved', function(event) {
-            if (event.type == 'DOMNodeInserted') {
-                alert('Content added! Current content:' + '\n\n' + this.innerHTML);
-            } else {
-                alert('Content removed! Current content:' + '\n\n' + this.innerHTML);
-            }
-        });
-        
-        $('#divId').bind('DOMNodeInserted', function(event) {
-                     alert('inserted ' + event.target.nodeName + // new node
-                   ' in ' + event.relatedNode.nodeName); // parent
-               });
-    */
-        
-        /*
-         for (i in $scope.opened.highlight)
-         {
-         var text = $scope.opened.highlight[i].text;
-         console.log(text,$scope.opened.highlight[i])
-         term = text;
-         var str = $scope.opened.description;
-         var newstr = '<span class="highlight">'+term+'</span>';
-         var res = str.replace(term,newstr);
-           $scope.opened.description = res;
-    }
-        */
         
     });
     
@@ -143,13 +164,15 @@ function($compile,$http,$scope, Pagination) {
       {
       term = $.trim(($scope.opened.highlight[i].text))
       var str = $("#news").html();
-      var newstr = '<span class="highlight" ng-mouseover="loadcmt($event)" ng-mouseout="unloadcmt($event)">'+term+'</span>';
+      var id = $scope.opened.highlight[i].number;
+       $scope.hid = $scope.opened.highlight[i]._id;
+      var newstr = '<span id='+id+' class="highlight" ng-mouseover="loadcmt()" ng-mouseout="unloadcmt($event)">'+term+'</span>';
       var res = str.replace(term,newstr);
         $("#news").html(res)
         var appPane = $('#news');//JQuery request for the app pane element.
        // appPane.html(data);//The dynamically loaded data
         $compile(appPane.contents())($scope);//Tells Angular to recompile the contents of the app pane.
-        
+ 
     }
   };
   
@@ -182,9 +205,26 @@ function($compile,$http,$scope, Pagination) {
     };
   
   $scope.addcomment = function(id,txt) { 
+      alert("id",id)
       $scope.opened._id;
       $http.get('/del/' + $scope.opened._id+'/'+txt).success(function(data) {
-          
+              $scope.loadData();
+      });  
+      $scope.opened.comments.unshift({
+			"content" : app.txt
+		});
+  };
+
+  $scope.addcom = function(id,txt) { 
+      console.log("hi")
+      console.log(app.high_id)
+      $scope.opened.hid = app.high_id
+      console.log($scope.opened.highlight)
+      $scope.opened._id;
+      $( "#tooltip #commented" ).html( "<p>"+$scope.currentcom+"</p>" );
+      
+      $http.get('/adcom/' + $scope.opened._id+'/'+$scope.opened.hid+'/'+txt).success(function(data) {
+          console.log("***********",data)
               $scope.loadData();
       });  
       $scope.opened.comments.unshift({

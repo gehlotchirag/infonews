@@ -11,9 +11,9 @@ var path = require('path');
 
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('localhost:27017/newsreader');
+//var db = monk('localhost:27017/newsreader');
 
-//var db = monk('mongodb://admin:developer@oceanic.mongohq.com:10020/newsreader');
+var db = monk('mongodb://admin:developer@oceanic.mongohq.com:10020/newsreader');
 
 
 var app = express();
@@ -45,7 +45,9 @@ app.get('/helloworld', routes.helloworld);
 app.get('/userlist', routes.userlist(db));
 app.get('/getUser', routes.getUser(db));
 app.get('/del/:id/:txt', routes.del(db));
-app.get('/high/:id/:txt', routes.high(db));
+app.post('/high/:id/:txt', routes.high(db));
+app.get('/adcom/:id/:hid/:txt', routes.adcom(db));
+app.get('/findcom/:id/:hid', routes.findcom(db));
 
 
 
