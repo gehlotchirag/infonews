@@ -4,8 +4,40 @@ block content
     nav.navbar.navbar-default(role='navigation')
         div.navbar-header
             a.navbar-brand(href='#') Info News Reeader App
-        p.navbar-text.navbar-right 
-            a(href='https://github.com/gehlotchirag/infonews') Review Code
+        p.navbar-text 
+            a(href='https://github.com/gehlotchirag/infonews') 
+            ul.nav.navbar-nav.navbar-right
+                li.dropdown
+                    a.dropdown-toggle(href='#', data-toggle='dropdown' )
+                        | FrameWork description
+                    ul.dropdown-menu
+                        li
+                          a(href='http://nodejs.org/') 
+                              img(src='http://nodejs.org/images/baby-node.svg', width='12')
+                              | &nbsp; Node js
+                        li
+                          a(href='http://expressjs.com/') Expressjs (Node Framework)
+                        li.divider
+                        li
+                          a(href='http://angularjs.org/') 
+                                img(src='https://pbs.twimg.com/profile_images/2149314222/square.png', width='16')
+                                | &nbsp; AngularJs
+                          
+                        li
+                            a(href='http://jade-lang.com/') 
+                                  img(src='http://technotip.com/wp-content/uploads/nodejs/jade-template-engine-nodejs-express-web-framework.png', width='16')
+                                  | &nbsp; Jade - Template Engine
+                        li.divider
+                        li
+                          a(href='https://www.mongodb.org/') 
+                                img(src='http://www.joyent.com/content/07-blog/722-joyent-to-sponsor-and-present-at-mongosv-2012/mongodb-leaf.png', width='16')
+                                | &nbsp; Mongo Db
+                        li.divider
+                        li
+                          a(href='https://github.com/gehlotchirag/infonews') 
+                                img(src='https://github.global.ssl.fastly.net/images/modules/logos_page/GitHub-Mark.png', width='16')
+                                | &nbsp; GitHub Code
+                          
         
 
     div.container
