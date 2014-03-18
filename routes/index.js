@@ -51,7 +51,7 @@ exports.high = function(db) {
         var ObjectId = require('mongodb').ObjectID;
         var newid= new ObjectId();
         var collection = db.get('newsreader');
-        collection.update({ _id:GetId}, {$push:{'highlight': {number: newid, 'text': text} }},{upsert:true,safe:false}, function(err, result) {
+        collection.update({ _id:GetId}, {$push:{'highlight': {'number': newid, 'text': text} }},{upsert:true,safe:false}, function(err, result) {
             res.send(newid);
 //            res.send((result === 1) ? { msg: 'done' } : { msg:'error: ' + err });  
         });

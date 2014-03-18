@@ -18,6 +18,7 @@ function($compile,$http,$scope, Pagination) {
  
  $http.post('/high/' + $scope.opened._id+'/'+term).success(function(data) {
      app.highid = data;
+     alert(app.highid)
      $scope.loadData();
      var str = $("#news").html();
      var newstr = '<span id='+app.highid+' class="highlight" ng-mouseover="loadcmt($event)" ng-mouseout="unloadcmt($event)" >'+term+'</span>'
@@ -49,14 +50,17 @@ function($compile,$http,$scope, Pagination) {
     $scope.loadcmt = function() {
         app.high_id = event.srcElement.id;
         for (i in $scope.opened.highlight) { 
-            var sn = $scope.opened.highlight[i].number.toString();
-            var apid = app.high_id.toString();
-            //if (($scope.opened.highlight[i].number).equals(app.high_id));
-            if (sn == apid);
+            console.log($scope.opened.highlight);
+            console.log($scope.opened.highlight[i].number);
+            console.log(app.high_id);
+            var sn = new String($scope.opened.highlight[i].number.toString);
+            var apid = new String (app.high_id.toString);
+            console.log(sn === apid)
+
+            if (sn === apid);
             {
-                alert($scope.opened.highlight[i].number + "=====" +app.high_id)
-                
-            alert("in"+$scope.opened.highlight[i].comment)            
+            console.log($scope.opened.highlight[i].number + "===" +app.high_id)    
+            console.log("in"+$scope.opened.highlight[i].comment)            
             $scope.currentcom = $scope.opened.highlight[i].comment;
             }
          }
@@ -90,11 +94,9 @@ function($compile,$http,$scope, Pagination) {
     
    
     $scope.$watch('currentcom', function () {
-     alert($scope.currentcom)   
     });
     
     $scope.$watch('opened.description', function () {
-        alert($scope.opened.description)
         function showpanel() {  
             
             for (i in $scope.opened.highlight)
@@ -205,7 +207,6 @@ function($compile,$http,$scope, Pagination) {
     };
   
   $scope.addcomment = function(id,txt) { 
-      alert("id",id)
       $scope.opened._id;
       $http.get('/del/' + $scope.opened._id+'/'+txt).success(function(data) {
               $scope.loadData();
