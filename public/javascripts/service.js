@@ -48,7 +48,7 @@ function($compile,$http,$scope, Pagination) {
       
     $scope.loadcmt = function() {
         app.high_id = event.srcElement.id;
-        $( "#tooltip #commented" ).html( "<p>"+"loading.."+"</p>" );
+        $( "#tooltip #commented" ).html( "<p>"+"<img scr=lib/images/ajax-loader.gif>loading.."+"</p>" );
         $("#tooltip").css("visibility","visible") 
         $("#tooltip").css({top: (event.pageY), left: (event.pageX), position:'absolute'});  
         
