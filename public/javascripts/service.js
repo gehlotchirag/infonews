@@ -53,16 +53,15 @@ function($compile,$http,$scope, Pagination) {
             console.log($scope.opened.highlight);
             console.log($scope.opened.highlight[i].number);
             console.log(app.high_id);
-            var sn = new String($scope.opened.highlight[i].number.toString);
-            var apid = new String (app.high_id.toString);
+            var sn = $scope.opened.highlight[i].number.valueOf();
+            var apid =  app.high_id.valueOf();
             console.log(sn === apid)
 
-            if (sn === apid);
+            if(sn === apid)
             {
-            console.log($scope.opened.highlight[i].number + "===" +app.high_id)    
-            console.log("in"+$scope.opened.highlight[i].comment)            
             $scope.currentcom = $scope.opened.highlight[i].comment;
             }
+           
          }
         
         
@@ -70,8 +69,10 @@ function($compile,$http,$scope, Pagination) {
          //   //  console.log("*******************",data)
          //   $scope.userlist = data;
          // });
-        
-        $( "#tooltip #commented" ).html( "<p>"+$scope.currentcom+"</p>" );
+        if ($scope.currentcom ===undefined )
+        $( "#tooltip #commented" ).html( "<p>"+"no comments yet!"+"</p>" );
+        else
+        $( "#tooltip #commented" ).html( "<p>"++"</p>" );
         $("#tooltip").css("visibility","visible") 
         $("#tooltip").css({top: (event.pageY), left: (event.pageX), position:'absolute'});  
       //  $("#tooltip").css("top", ($event.y) + "px").css("left", ($event.x) + "px");
@@ -222,7 +223,10 @@ function($compile,$http,$scope, Pagination) {
       $scope.opened.hid = app.high_id
       console.log($scope.opened.highlight)
       $scope.opened._id;
-      $( "#tooltip #commented" ).html( "<p>"+$scope.currentcom+"</p>" );
+      if ($scope.currentcom ===undefined )
+      $( "#tooltip #commented" ).html( "<p>"+"no comments yet!"+"</p>" );
+      else
+      $( "#tooltip #commented" ).html( "<p>"+scope.currentcom+"</p>" );
       
       $http.get('/adcom/' + $scope.opened._id+'/'+$scope.opened.hid+'/'+txt).success(function(data) {
           console.log("***********",data)
