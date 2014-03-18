@@ -44,6 +44,8 @@ function($compile,$http,$scope, Pagination) {
                
     });
     
+    
+    
     $( "#news" ).ready(function() {
 
       });
@@ -52,7 +54,7 @@ function($compile,$http,$scope, Pagination) {
         app.high_id = event.srcElement.id;
         $( "#tooltip #commented" ).html( "<img scr='lib/images/ajax-loader.gif'><p>"+"loading.."+"</p>" );
         $("#tooltip").css("visibility","visible") 
-        $("#tooltip #showcmt").slideDown()
+        //$("#tooltip #showcmt").slideDown()
         $("#tooltip").css({top: (event.pageY), left: (event.pageX), position:'absolute'});  
         
       //  $http.get('/gethigh/'+app.objid).success(function(data) {
@@ -108,10 +110,14 @@ function($compile,$http,$scope, Pagination) {
     
     
     $scope.unloadcmt = function(event) {
-        if(event.toElement.id !== "tooltip")
+        console.log(event.toElement.id)
+        if(event.toElement.id === "tooltip" || event.toElement.id == "commented" || event.toElement.id === "comment" || event.toElement.id === "showcmt")
+        {
+        }
+        else{
         $("#tooltip #showcmt").slideUp();
-        
         $("#tooltip").css("visibility","hidden")
+        }
     };
     
    
@@ -237,11 +243,14 @@ function($compile,$http,$scope, Pagination) {
 			"content" : app.txt
 		});
   };
+  
+ 
+  
   $scope.loadcmt = function() {
       app.high_id = event.srcElement.id;
       $( "#tooltip #commented" ).html( "<img scr='lib/images/ajax-loader.gif'><p>"+"loading.."+"</p>" );
       $("#tooltip").css("visibility","visible") 
-      $("#tooltip #showcmt").slideDown()
+      //$("#tooltip #showcmt").slideDown()
       
       $("#tooltip").css({top: (event.pageY), left: (event.pageX), position:'absolute'});  
       
@@ -275,6 +284,14 @@ function($compile,$http,$scope, Pagination) {
     //  $("#tooltip").css("top", ($event.y) + "px").css("left", ($event.x) + "px");
 });
   };
+  
+  $scope.showcomm = function() {
+      $("#tooltip #showcmt").slideDown()
+     
+
+  }
+  
+  
   $scope.addcom = function(id,txt) { 
       console.log("hi")
       console.log(app.high_id)
