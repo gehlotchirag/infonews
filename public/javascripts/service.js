@@ -3,6 +3,8 @@ var app = angular.module('Test', ['SimplePagination']);
 
 app.controller('ItemController', ['$compile','$http','$scope', 'Pagination',   
 function($compile,$http,$scope, Pagination) {
+    $("#tooltip #showcmt").slideUp();
+    
     $("#news").mouseup( function (e) { 
         //alert("You selected: "+window.getSelection());
         
@@ -50,6 +52,7 @@ function($compile,$http,$scope, Pagination) {
         app.high_id = event.srcElement.id;
         $( "#tooltip #commented" ).html( "<img scr='lib/images/ajax-loader.gif'><p>"+"loading.."+"</p>" );
         $("#tooltip").css("visibility","visible") 
+        $("#tooltip #showcmt").slideDown()
         $("#tooltip").css({top: (event.pageY), left: (event.pageX), position:'absolute'});  
         
       //  $http.get('/gethigh/'+app.objid).success(function(data) {
@@ -106,6 +109,8 @@ function($compile,$http,$scope, Pagination) {
     
     $scope.unloadcmt = function(event) {
         if(event.toElement.id !== "tooltip")
+        $("#tooltip #showcmt").slideUp();
+        
         $("#tooltip").css("visibility","hidden")
     };
     
@@ -236,6 +241,8 @@ function($compile,$http,$scope, Pagination) {
       app.high_id = event.srcElement.id;
       $( "#tooltip #commented" ).html( "<img scr='lib/images/ajax-loader.gif'><p>"+"loading.."+"</p>" );
       $("#tooltip").css("visibility","visible") 
+      $("#tooltip #showcmt").slideDown()
+      
       $("#tooltip").css({top: (event.pageY), left: (event.pageX), position:'absolute'});  
       
       $http.get('/gethigh/'+app.objid).success(function(data) {
