@@ -48,14 +48,14 @@ function($compile,$http,$scope, Pagination) {
       
     $scope.loadcmt = function() {
         app.high_id = event.srcElement.id;
-        $( "#tooltip #commented" ).html( "<p>"+"<img scr=lib/images/ajax-loader.gif>loading.."+"</p>" );
+        $( "#tooltip #commented" ).html( "<img scr='lib/images/ajax-loader.gif'><p>"+"loading.."+"</p>" );
         $("#tooltip").css("visibility","visible") 
         $("#tooltip").css({top: (event.pageY), left: (event.pageX), position:'absolute'});  
         
-        $http.get('/gethigh/'+app.objid).success(function(data) {
+      //  $http.get('/gethigh/'+app.objid).success(function(data) {
             console.log($scope.opened.highlight)
             
-            $scope.opened.highlight = data[0].highlight;
+            //$scope.opened.highlight = data[0].highlight;
             console.log($scope.opened.highlight)
         
         for (i in $scope.opened.highlight) { 
@@ -80,7 +80,7 @@ function($compile,$http,$scope, Pagination) {
         // $("#tooltip").css("visibility","visible") 
         // $("#tooltip").css({top: (event.pageY), left: (event.pageX), position:'absolute'});  
       //  $("#tooltip").css("top", ($event.y) + "px").css("left", ($event.x) + "px");
-  });
+//  });
     };
     
     $scope.loadData = function () {
@@ -232,7 +232,42 @@ function($compile,$http,$scope, Pagination) {
 			"content" : app.txt
 		});
   };
+  $scope.loadcmt = function() {
+      app.high_id = event.srcElement.id;
+      $( "#tooltip #commented" ).html( "<img scr='lib/images/ajax-loader.gif'><p>"+"loading.."+"</p>" );
+      $("#tooltip").css("visibility","visible") 
+      $("#tooltip").css({top: (event.pageY), left: (event.pageX), position:'absolute'});  
+      
+      $http.get('/gethigh/'+app.objid).success(function(data) {
+          console.log($scope.opened.highlight)
+          
+          $scope.opened.highlight = data[0].highlight;
+          console.log($scope.opened.highlight)
+      
+      for (i in $scope.opened.highlight) { 
+          // console.log($scope.opened.highlight);
+          // console.log($scope.opened.highlight[i].number);
+          // console.log(app.high_id);
+          var sn = $scope.opened.highlight[i].number.valueOf();
+          var apid =  app.high_id.valueOf();
+          //console.log(sn === apid)
 
+          if(sn === apid)
+          {
+          $scope.currentcom = $scope.opened.highlight[i].comment;
+              if($scope.currentcom===undefined)
+              {$scope.currentcom = "No Comments Yet!"}
+          
+          }
+         
+       }
+       //alert($scope.currentcom)
+       $( "#tooltip #commented" ).html( "<p>"+$scope.currentcom+"</p>" );
+      // $("#tooltip").css("visibility","visible") 
+      // $("#tooltip").css({top: (event.pageY), left: (event.pageX), position:'absolute'});  
+    //  $("#tooltip").css("top", ($event.y) + "px").css("left", ($event.x) + "px");
+});
+  };
   $scope.addcom = function(id,txt) { 
       console.log("hi")
       console.log(app.high_id)
@@ -248,6 +283,7 @@ function($compile,$http,$scope, Pagination) {
       $scope.opened.comments.unshift({
 			"content" : app.txt
 		});
+        $scope.loadcmt();
   };
 
 }]);
