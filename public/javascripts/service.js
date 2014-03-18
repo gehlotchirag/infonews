@@ -50,16 +50,19 @@ function($compile,$http,$scope, Pagination) {
     $scope.loadcmt = function() {
         app.high_id = event.srcElement.id;
         for (i in $scope.opened.highlight) { 
-            console.log($scope.opened.highlight);
-            console.log($scope.opened.highlight[i].number);
-            console.log(app.high_id);
+            // console.log($scope.opened.highlight);
+            // console.log($scope.opened.highlight[i].number);
+            // console.log(app.high_id);
             var sn = $scope.opened.highlight[i].number.valueOf();
             var apid =  app.high_id.valueOf();
-            console.log(sn === apid)
+            //console.log(sn === apid)
 
             if(sn === apid)
             {
             $scope.currentcom = $scope.opened.highlight[i].comment;
+                if($scope.currentcom===undefined)
+                {$scope.currentcom = "No Comments Yet!"}
+            
             }
            
          }
@@ -69,10 +72,8 @@ function($compile,$http,$scope, Pagination) {
          //   //  console.log("*******************",data)
          //   $scope.userlist = data;
          // });
-        if ($scope.currentcom ===undefined )
-        $( "#tooltip #commented" ).html( "<p>"+"no comments yet!"+"</p>" );
-        else
-        $( "#tooltip #commented" ).html( "<p>"++"</p>" );
+        
+        $( "#tooltip #commented" ).html( "<p>"+$scope.currentcom+"</p>" );
         $("#tooltip").css("visibility","visible") 
         $("#tooltip").css({top: (event.pageY), left: (event.pageX), position:'absolute'});  
       //  $("#tooltip").css("top", ($event.y) + "px").css("left", ($event.x) + "px");
@@ -223,10 +224,7 @@ function($compile,$http,$scope, Pagination) {
       $scope.opened.hid = app.high_id
       console.log($scope.opened.highlight)
       $scope.opened._id;
-      if ($scope.currentcom ===undefined )
-      $( "#tooltip #commented" ).html( "<p>"+"no comments yet!"+"</p>" );
-      else
-      $( "#tooltip #commented" ).html( "<p>"+scope.currentcom+"</p>" );
+      $( "#tooltip #commented" ).html( "<p>"+$scope.currentcom+"</p>" );
       
       $http.get('/adcom/' + $scope.opened._id+'/'+$scope.opened.hid+'/'+txt).success(function(data) {
           console.log("***********",data)
