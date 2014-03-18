@@ -72,6 +72,21 @@ exports.adcom = function(db) {
     };
 };
 
+exports.gethigh = function(db) {
+    return function(req, res) {
+        var GetId = req.params.id;
+        var HighId = req.params.hid;
+        var text = req.params.txt;
+        var ObjectId = require('mongodb').ObjectID;
+        var collection = db.get('newsreader');
+        collection.find({ "_id": ObjectId(GetId) }, function(err, result) {
+            res.send(result);  
+        });
+    };
+};
+
+
+
 exports.findcom = function(db) {
     return function(req, res) {
         var GetId = req.params.id;

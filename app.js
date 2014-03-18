@@ -48,6 +48,7 @@ app.get('/del/:id/:txt', routes.del(db));
 app.post('/high/:id/:txt', routes.high(db));
 app.get('/adcom/:id/:hid/:txt', routes.adcom(db));
 app.get('/findcom/:id/:hid', routes.findcom(db));
+app.get('/gethigh/:id', routes.gethigh(db));
 
 
 

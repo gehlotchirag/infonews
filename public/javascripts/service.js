@@ -18,15 +18,14 @@ function($compile,$http,$scope, Pagination) {
  
  $http.post('/high/' + $scope.opened._id+'/'+term).success(function(data) {
      app.highid = data;
-     alert(app.highid)
+     //alert(app.highid)
      $scope.loadData();
      var str = $("#news").html();
      var newstr = '<span id='+app.highid+' class="highlight" ng-mouseover="loadcmt($event)" ng-mouseout="unloadcmt($event)" >'+term+'</span>'
      var res = str.replace(term,newstr);
-     console.log("----->>>",term)
-     console.log("?????",newstr)
-     
-     console.log(res)
+     // console.log("----->>>",term)
+     // console.log("?????",newstr)
+     console.log($scope.opened.highlight)
        $("#news").html(res)
        
        
@@ -49,6 +48,16 @@ function($compile,$http,$scope, Pagination) {
       
     $scope.loadcmt = function() {
         app.high_id = event.srcElement.id;
+        $( "#tooltip #commented" ).html( "<p>"+"loading.."+"</p>" );
+        $("#tooltip").css("visibility","visible") 
+        $("#tooltip").css({top: (event.pageY), left: (event.pageX), position:'absolute'});  
+        
+        $http.get('/gethigh/'+app.objid).success(function(data) {
+            console.log($scope.opened.highlight)
+            
+            $scope.opened.highlight = data[0].highlight;
+            console.log($scope.opened.highlight)
+        
         for (i in $scope.opened.highlight) { 
             // console.log($scope.opened.highlight);
             // console.log($scope.opened.highlight[i].number);
@@ -66,27 +75,33 @@ function($compile,$http,$scope, Pagination) {
             }
            
          }
-        
-        
-         // $http.get('/findcom/'+ $scope.opened._id+'/'+app.high_id).success(function(data) {
-         //   //  console.log("*******************",data)
-         //   $scope.userlist = data;
-         // });
-        
-        $( "#tooltip #commented" ).html( "<p>"+$scope.currentcom+"</p>" );
-        $("#tooltip").css("visibility","visible") 
-        $("#tooltip").css({top: (event.pageY), left: (event.pageX), position:'absolute'});  
+         //alert($scope.currentcom)
+         $( "#tooltip #commented" ).html( "<p>"+$scope.currentcom+"</p>" );
+        // $("#tooltip").css("visibility","visible") 
+        // $("#tooltip").css({top: (event.pageY), left: (event.pageX), position:'absolute'});  
       //  $("#tooltip").css("top", ($event.y) + "px").css("left", ($event.x) + "px");
+  });
     };
     
     $scope.loadData = function () {
-        console.log("here")
+       // console.log("here")
          $http.get('/getUser').success(function(data) {
-             console.log("*******************",data)
+            // console.log("*******************",data)
 //             console.log("*******************",$scope.opened)
            $scope.userlist = data;
          });
       };
+
+
+      $scope.gethigh = function (id) {
+          console.log("getting..")
+           $http.get('/gethigh/'+id).success(function(data) {
+               //console.log("*******************",data)
+               console.log("*******************",data[0].highlight)
+             // console.log("*******************",$scope.opened)
+             $scope.userlist = data;
+           });
+        };
     
     
     $scope.unloadcmt = function(event) {
@@ -100,7 +115,7 @@ function($compile,$http,$scope, Pagination) {
     
     $scope.$watch('opened.description', function () {
         function showpanel() {  
-            
+            app.objid = $scope.opened._id;
             for (i in $scope.opened.highlight)
             {
                 var str = $("#news").html();
